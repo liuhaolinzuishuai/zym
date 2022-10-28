@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100vh;
+            color: white;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        let style = ` 
+        .left {
+            width: 100%;
+            // height: 42%;
+            background-color: black;
+        }
+        .right {
+            height: 300px;
+        }
+        em {
+            font-style: normal;
+        }
+       
+        .selector, .selector .key {
+             color: #f694ff;
+        }
+
+        .key, .comment {
+            color: #edecee;
+        }
+
+        .value {
+           color: #ffca85;
+        }
+
+        .big {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background-color: black;
+            margin: 50px auto;
+            position: relative;
+        }
+        
+        .head {
+            width: 120px;
+            height: 108px;
+            background-color: white;
+            position: absolute;
+            top: 42px;
+            left: 40px;
+            border-radius: 50%;
+            box-shadow: 16px 0px 0 -6px white, -16px 0px 0 -6px white;
+        }
+        
+        .head::before {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 40px;
+            position: absolute;
+            background-color: white;
+            border-radius: 15% 70% 15% 70%;
+        }
+        
+        .head::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 40px;
+            position: absolute;
+            background-color: white;
+            right: 0;
+            border-radius: 15% 70% 15% 70%;
+            transform: rotate(90deg);
+        }
+        
+        .body {
+            width: 46px;
+            height: 62px;
+            border-radius: 14px 14px 0 0;
+            position: absolute;
+            background-color: white;
+            top: 140px;
+            left: 77px;
+        }
+        
+        .tail div:nth-child(1) {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            position: absolute;
+            top: 141px;
+            left: 52px;
+            border-bottom: 14px solid #fff;
+            border-left: 6px solid transparent;
+            border-right: 12px solid transparent;
+            background: transparent;
+            transform: rotate(15deg);
+        }
+        
+        .tail div:nth-child(2) {
+            width: 40px;
+            height: 40px;
+            border-radius: 50% 50%;
+            position: absolute;
+            top: 152px;
+            left: 24px;
+            border-top: 9px solid #fff;
+            border-left: 1px solid transparent;
+            border-right: 12px solid transparent;
+            background: transparent;
+            transform: rotate(39deg);
+        }
+        `
+        const wh = function(which) {
+            if (which === ':') {
+                styles = document.querySelector('.left').innerHTML.replace(
+                    /([a-zA-Z- ^\n]*)$/,
+                    '<em class="key">$1</em>:',
+                );
+            } else if (which === ';') {
+                styles = document.querySelector('.left').innerHTML.replace(
+                    /([^:]*)$/,
+                    '<em class="value">$1</em>;',
+                );
+            } else if (which === '{') {
+                styles = document.querySelector('.left').innerHTML.replace(
+                    /(.*)$/,
+                    '<em class="selector">$1</em>{',
+                );
+
+            } else {
+                styles = document.querySelector('.left').innerHTML + which;
+            }
+            document.querySelector('.left').innerHTML = styles;
+            return document.querySelector('#ggg').insertAdjacentHTML('beforeend', which);
+        }
+        const wa = function(message, index, interval) {
+            if (index < message.length) {
+                let pre = document.querySelector('.left');
+                pre.scrollTop = pre.scrollHeight;
+                wh(message[index++]);
+                return setTimeout(() => wa(message, index, interval), interval);
+
+            }
+        }
+        document.body.insertAdjacentHTML(
+            'beforeend',
+            `\<style id="ggg"></style>
+         <div class="right">
+        <div class="big">
+            <div class="head"></div>
+            <div class="body"></div>
+            <div class="tail">
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+    </div>
+    <pre class="left"></pre>\
+`,
+        );
+        wa(style, 0, 24);
+    </script>
+
+</body>
+
+</html>
